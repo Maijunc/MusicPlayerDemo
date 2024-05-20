@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        // MultiSlidingUpPanelLayout 多个可滑动面板Layout
         val panelLayout : MultiSlidingUpPanelLayout = findViewById(R.id.root_sliding_up_panel)
 
         val items: MutableList<Class<*>> = ArrayList()

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.androidcourse.musicplayerdemo"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
-    implementation(project(":lib:extensions"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,9 +69,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    implementation("com.github.realgearinc:multi-sliding-up-panel:1.3.6")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
-    implementation("androidx.viewpager:viewpager:1.0.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
+
+    implementation("com.github.realgearinc:multi-sliding-up-panel:1.3.6")
+    implementation("com.github.realgearinc:readable-bottom-bar:1.0.2")
+
+    implementation("com.google.android.material:material:1.5.0")
+
+    implementation(project(":lib:extensions"))
+    implementation(project(":lib:icons_pack"))
 
 }

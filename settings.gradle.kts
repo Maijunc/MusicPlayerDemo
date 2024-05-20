@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "MusicPlayerDemo"
 include(":app")
 include(":lib:extensions")
+include(":lib:icons_pack")
