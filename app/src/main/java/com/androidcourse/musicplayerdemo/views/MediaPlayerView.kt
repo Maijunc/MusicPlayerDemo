@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.androidcourse.musicplayerdemo.R
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
-public class MediaPlayerView (rootView : View){
+class MediaPlayerView (rootView : View){
 
     companion object {
         const val STATE_NORMAL: Int = 0
@@ -34,8 +34,9 @@ public class MediaPlayerView (rootView : View){
     }
 
     // slideOffset 滑动偏移量 alpha 是透明度的设置 1F 表示完全不透明 0表示完全透明
+    // 随着滑动
     fun onSliding(slideOffset : Float, state : Int) {
-        val fadeStart : Float = 0.25F
+        val fadeStart = 0.25F
         val alpha : Float = (slideOffset - fadeStart) * (1F / (1F - fadeStart))
 
         //正常状态就显示

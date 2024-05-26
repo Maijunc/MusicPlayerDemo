@@ -270,6 +270,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--    底页 默认是折叠(collapsed)的-->
     <FrameLayout
         android:id="@+id/media_player_bottom_sheet_behavior"
         android:layout_width="match_parent"

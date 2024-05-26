@@ -20,10 +20,13 @@ class MediaPlayerBarView (rootView : View){
 
     private var mState : Int = 0
 
+    // 背景板
     private val mBackgroundView : FrameLayout
 
+    // 进度条
     private val mProgressIndicator : LinearProgressIndicator
 
+    // 控制盒
     private val mControlsContainer : ConstraintLayout
 
     init {

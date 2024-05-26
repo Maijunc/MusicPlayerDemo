@@ -15,8 +15,10 @@ import com.realgear.readable_bottom_bar.ReadableBottomBar
 class RootNavigationBarPanel (context : Context, panelLayout : MultiSlidingUpPanelLayout)
     : BasePanelView(context, panelLayout) {
 
+    //
     private lateinit var rootViewPager : ViewPager2
 
+    // 底部导航栏
     private lateinit var rootNavigationBar : ReadableBottomBar
 
     init {

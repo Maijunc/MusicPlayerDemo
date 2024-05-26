@@ -23,8 +23,9 @@ import com.realgear.readable_bottom_bar.ReadableBottomBar
 class RootMediaPlayerPanel(context : Context, panelLayout : MultiSlidingUpPanelLayout)
     : BasePanelView(context, panelLayout) {
 
+    // 音乐播放器视图
     private lateinit var mMediaPlayerView : MediaPlayerView
-
+    // 音乐播放器工具栏视图
     private lateinit var mMediaPlayerBarView : MediaPlayerBarView
 
     init {
