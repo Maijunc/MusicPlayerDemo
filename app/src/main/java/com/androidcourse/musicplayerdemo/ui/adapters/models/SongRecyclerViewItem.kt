@@ -14,4 +14,12 @@ class SongRecyclerViewItem(song : Song)
     fun getFilePath() : String {
         return m_Item.data
     }
+
+    override fun getHashCode() : Int {
+        var result : Int = this.m_Item.id.hashCode().toString().toInt()
+        result = 31 * result * this.m_Item.title.hashCode()
+        result = 31 * result * this.m_Item.data.hashCode()
+
+        return result
+    }
 }

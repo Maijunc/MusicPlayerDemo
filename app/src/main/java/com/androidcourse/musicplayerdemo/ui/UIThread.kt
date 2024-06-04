@@ -12,7 +12,7 @@ import com.realgear.multislidinguppanel.Adapter
 
 
 class UIThread(activity : MainActivity) {
-    // 这不是一个子线程，只是把main中的ui生成挪到了这里
+    // 这不是一个子线程，只是把main中的ui载入挪到了这里，也就是一层封装
     private val m_MainActivity : MainActivity
 
     private lateinit var m_MultiSlidingPanel : MultiSlidingUpPanelLayout

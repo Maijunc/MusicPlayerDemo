@@ -72,7 +72,7 @@ dependencies {
 //    implementation(libs.multi.sliding.up.panel)
 //    implementation(libs.readable.bottom.bar)
 
-    implementation("com.github.realgearinc:multi-sliding-up-panel:1.2.4")
+    implementation("com.github.realgearinc:multi-sliding-up-panel:1.2.7")
     implementation("com.github.realgearinc:readable-bottom-bar:1.0.2")
 
     implementation(libs.material)

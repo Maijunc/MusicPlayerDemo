@@ -15,4 +15,6 @@ abstract class BaseRecyclerViewItem(title : String, itemType : ItemType) {
         m_Title = title
         m_ItemType = itemType
     }
+
+    abstract fun getHashCode() : Int
 }

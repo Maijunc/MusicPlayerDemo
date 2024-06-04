@@ -47,9 +47,14 @@ class RootNavigationBarPanel (context : Context, panelLayout : MultiSlidingUpPan
         // 存储导航栏的Adapter
         val adapter = StateFragmentAdapter(supportFragmentManager, lifecycle)
 
-        adapter.addFragment(FragmentHome())
-        adapter.addFragment(FragmentLibrary())
-        adapter.addFragment(FragmentSettings())
+        adapter.addFragment(FragmentHome::class.java)
+        adapter.addFragment(FragmentLibrary::class.java)
+        adapter.addFragment(FragmentSettings()::class.java)
+
+        // 调用示范
+        // adapter.addFragment(FragmentLibrary::class)
+        // adapter.addFragment(FragmentLibrary::class.java, rootNavigationBar, rootViewPager)
+        // val library : FragmentLibrary = adapter.getFragment(FragmentLibrary::class.java)
 
         rootViewPager.setAdapter(adapter)
         rootNavigationBar.setupWithViewPager2(rootViewPager)

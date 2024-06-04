@@ -3,10 +3,13 @@ package com.androidcourse.mediaplayer
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaDescription
 import android.media.MediaMetadata
+import android.media.MediaMetadataRetriever
 import android.provider.MediaStore
 import com.realgear.mediaplayer.model.Song
+import java.io.ByteArrayInputStream
 import java.util.TreeMap
 
 
@@ -112,6 +115,18 @@ class LibraryManager {
         }
 
         private fun getSongArt(song: Song): Bitmap? {
+            try {
+                val retriever = MediaMetadataRetriever()
+                retriever.setDataSource(song.data)
+                val data = retriever.embeddedPicture
+
+                if (data != null && data.size > 0) {
+                    val bitmap : Bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+                    return bitmap
+                }
+            }
+            catch (ignore : Exception) {}
+
             return null
         }
     }
