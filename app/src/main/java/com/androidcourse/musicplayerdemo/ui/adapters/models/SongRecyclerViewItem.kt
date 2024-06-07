@@ -15,6 +15,7 @@ class SongRecyclerViewItem(song : Song)
         return m_Item.data
     }
 
+    // 做切换动画效果用
     override fun getHashCode() : Int {
         var result : Int = this.m_Item.id.hashCode().toString().toInt()
         result = 31 * result * this.m_Item.title.hashCode()
