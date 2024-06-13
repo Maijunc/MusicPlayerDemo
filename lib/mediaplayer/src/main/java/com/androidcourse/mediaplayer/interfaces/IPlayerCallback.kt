@@ -5,6 +5,8 @@ interface IPlayerCallback {
 
     fun onClickPlayIndex(index : Int)
 
+    fun onClickPlayPause()
+
     fun onClickPlayNext()
 
     fun onClickPlayPrev()

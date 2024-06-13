@@ -10,6 +10,7 @@ import android.media.session.PlaybackState
 import android.os.Handler
 import android.os.PowerManager
 import android.os.SystemClock
+import android.util.Log
 import androidx.annotation.IntDef
 import com.androidcourse.mediaplayer.interfaces.IPlaybackCallback
 import com.androidcourse.mediaplayer.utils.PlaybackListener
@@ -39,7 +40,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     @RepeatType
     var m_RepeatType = REPEAT_TYPE_ONE
 
-    val THREAD_UPDATE_INTERVAL : Int = 350 // 比较丝滑的更新间隔
+    val THREAD_UPDATE_INTERVAL : Int = 500 // 比较丝滑的更新间隔
 
     private var m_PlaybackState : Int = 0
 
@@ -67,7 +68,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
         this.m_Callback = playbackCallback
 
         this.m_Listener = PlaybackListener(this)
-        this.m_UIHandler = Handler()
+        this.m_UIHandler = android.os.Handler()
         this.m_AudioManager = context.getSystemService(AudioManager::class.java)
 
         this.m_Queue = ArrayList()
@@ -76,13 +77,15 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
         this.m_Song = LibraryManager.getTreemapOfSongs(LibraryManager.getSongs(this.m_Context))
     }
 
+    // 放弃音频焦点
     private fun onAbandonAudioFocus() {
         if(this.m_AudioFocusRequest != null) {
             this.m_AudioManager.abandonAudioFocusRequest(this.m_AudioFocusRequest!!)
         }
     }
 
-    private fun  onGetAudioFocus() : Boolean {
+    // 获取音频焦点
+    private fun onGetAudioFocus() : Boolean {
         if(this.m_AudioFocusRequest == null) {
             val builder : AudioFocusRequest.Builder = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                 .setFocusGain(AudioManager.AUDIOFOCUS_GAIN)
@@ -127,9 +130,13 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
             }
     }
 
+    // 刷新，重新生成一个thread
     private fun onUpdatePlaybackState() {
-//        if(this.m_Callback == null)
-//            return
+        //不需要做此判断
+        /*
+        if(this.m_Callback == null)
+            return
+         */
 
         this.onStoppingThreads()
 
@@ -140,30 +147,31 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
             thread.onStart()
         }
         else {
-            @SuppressLint("WrongConstant") val builder : PlaybackState.Builder = PlaybackState.Builder()
+            @SuppressLint("WrongConstant")
+            val builder : PlaybackState.Builder = PlaybackState.Builder()
                 .setActions(this.getAvailableActions())
                 .setState(this.getPlaybackState(), this.getPlaybackState().toLong(), 1.0F, SystemClock.elapsedRealtime())
 
-            this.m_Callback!!.onPlaybackStateChange(builder.build())
+            this.m_Callback.onPlaybackStateChange(builder.build())
         }
     }
 
     // Playback Actions (Notification uses)
     fun canPlayNext() : Boolean {
-        return (this.m_CurrentQueueIndex++) < this.m_Queue.size
+        return (this.m_CurrentQueueIndex + 1) < this.m_Queue.size
     }
 
     fun canPlayPrev() : Boolean {
-        return (this.m_CurrentQueueIndex--) >= 0
+        return (this.m_CurrentQueueIndex - 1) >= 0
     }
 
     fun getAvailableActions() : Long {
-        var action : Long = PlaybackState.ACTION_PLAY
+        var actions : Long = PlaybackState.ACTION_PLAY
         if(this.isPlaying()) {
-            action = action or PlaybackState.ACTION_PAUSE
+            actions = actions or PlaybackState.ACTION_PAUSE
         }
 
-        return action or PlaybackState.ACTION_STOP or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO
+        return actions or PlaybackState.ACTION_STOP or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SEEK_TO
     }
 
     fun getCurrentQueueIndex() : Int {
@@ -247,6 +255,8 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     }
 
     fun onPlayIndex(queueIndex : Int) {
+        Log.i(TAG, "Previous Song Index: " + this.m_CurrentQueueIndex);
+
         val id : Int = this.m_Queue.get(queueIndex)
 
         val songToPlay : Song? = this.m_Song.get(id)
@@ -261,7 +271,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
             this.m_MediaPlayer!!.setOnCompletionListener(this.m_Listener)
             this.m_MediaPlayer!!.setOnPreparedListener(this.m_Listener)
         }
-        else if(isSameSong) {
+        else if(!isSameSong) {
             this.m_PlaybackState = PlaybackState.STATE_NONE
             this.m_MediaPlayer!!.reset()
             this.m_IsPrepared = false
@@ -288,6 +298,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
         else {
             this.onStartMediaPlayer()
         }
+        Log.i(TAG, "Playing Song Index: " + this.m_CurrentQueueIndex);
     }
     fun onPause() {
         if(this.m_MediaPlayer == null)
@@ -310,12 +321,12 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     }
     fun onPlayNext() {
         if(this.canPlayNext())
-            this.onPlayIndex(this.m_CurrentQueueIndex++)
+            this.onPlayIndex(this.m_CurrentQueueIndex + 1)
     }
     // 这里应该是 --this.m_CurrentQueueIndex ?
     fun onPlayPrev() {
         if(this.canPlayPrev())
-            this.onPlayIndex(this.m_CurrentQueueIndex--)
+            this.onPlayIndex(--this.m_CurrentQueueIndex - 1)
     }
 
     fun onSeekTo(position : Long) {

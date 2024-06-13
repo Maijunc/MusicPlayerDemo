@@ -32,6 +32,7 @@ class MediaSessionListener(service : MediaPlayerService)
     }
 
     override fun onStop() {
+        this.m_Service.getNotificationManager().onStop()
         this.m_Service.stopSelf()
     }
 

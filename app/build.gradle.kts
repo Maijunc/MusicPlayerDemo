@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -77,9 +79,9 @@ dependencies {
 
     implementation(libs.material)
 
-    implementation(project(":lib:extensions"))
-    implementation(project(":lib:icons_pack"))
-    implementation(project(":lib:mediaplayer"))
+    implementation(project(path = ":lib:extensions"))
+    implementation(project(path = ":lib:icons_pack"))
+    implementation(project(path = ":lib:mediaplayer"))
 
     //  生命周期感知型组件可执行操作来响应另一个组件（如 activity 和 fragment）的生命周期状态的变化。这些组件有助于您写出更有条理且往往更精简的代码，这样的代码更易于维护。
     val lifecycle_version = "2.8.0"
@@ -106,7 +108,8 @@ dependencies {
 //    annotationProcessor(libs.compiler)
 
     implementation("com.github.bumptech.glide:glide:$glide_version")
-    annotationProcessor("com.github.bumptech.glide:compiler:$glide_version")
+//    annotationProcessor("com.github.bumptech.glide:compiler:$glide_version")
+    kapt("com.github.bumptech.glide:compiler:4.14.2")
 
 
 }

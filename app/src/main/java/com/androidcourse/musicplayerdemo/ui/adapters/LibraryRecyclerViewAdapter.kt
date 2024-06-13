@@ -1,12 +1,12 @@
 package com.androidcourse.musicplayerdemo.ui.adapters
 
 import android.view.ViewGroup
+import com.androidcourse.musicplayerdemo.ui.UIThread
 import com.androidcourse.musicplayerdemo.ui.adapters.helpers.BaseViewHelper
 import com.androidcourse.musicplayerdemo.ui.adapters.models.BaseRecyclerViewItem
+import com.androidcourse.musicplayerdemo.ui.adapters.models.SongRecyclerViewItem
 import com.androidcourse.musicplayerdemo.ui.adapters.viewholders.BaseViewHolder
 import com.androidcourse.musicplayerdemo.ui.adapters.viewholders.SongViewHolder
-
-
 
 
 class LibraryRecyclerViewAdapter(items : MutableList<BaseRecyclerViewItem>)
@@ -22,5 +22,24 @@ class LibraryRecyclerViewAdapter(items : MutableList<BaseRecyclerViewItem>)
 
             else -> error("Unsupported item type: $itemType")
         }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        holder.itemView.setOnClickListener{
+            val i : Int = position
+            UIThread.getInstance().getMediaPlayerThread().getCallback()?.onClickPlay(i,getQueue())
+        }
+    }
+
+    private fun getQueue(): List<Int> {
+        val results: MutableList<Int> = ArrayList()
+        if (this.m_Items != null) {
+            for (i in 0 until this.m_Items.size) {
+                results.add((this.m_Items.get(i) as SongRecyclerViewItem).getSongId().toInt())
+            }
+        }
+        return results
     }
 }

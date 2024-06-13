@@ -4,10 +4,11 @@ class IntentFields {
     // Media Notification Constants
 
     companion object {
-        val ACTION_NEXT : String = "com.androidcourse.musicplayerdemo.mediaplayer.NEXT"
-        val ACTION_PREV : String = "com.androidcourse.musicplayerdemo.mediaplayer.PREV"
-        val ACTION_PAUSE : String = "com.androidcourse.musicplayerdemo.mediaplayer.PAUSE"
-        val ACTION_PLAY : String = "com.androidcourse.musicplayerdemo.mediaplayer.PLAY"
+        val ACTION_NEXT : String = "com.androidcourse.musicplayerdemo.NEXT"
+        val ACTION_PREV : String = "com.androidcourse.musicplayerdemo.PREV"
+        val ACTION_PAUSE : String = "com.androidcourse.musicplayerdemo.PAUSE"
+        val ACTION_PLAY : String = "com.androidcourse.musicplayerdemo.PLAY"
+        val ACTION_FAVOURITE : String = "com.example.softmusic_beta.FAVOURITE";
         val CHANNEL_ID : String = "com.androidcourse.musicplayerdemo"
 
         // Broadcast Constants

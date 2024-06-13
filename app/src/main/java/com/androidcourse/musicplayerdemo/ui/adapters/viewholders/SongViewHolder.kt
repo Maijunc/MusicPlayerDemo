@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.room.util.ViewInfo
 import com.androidcourse.musicplayerdemo.R
 import com.androidcourse.musicplayerdemo.glide.audiocover.AudioFileCover
 import com.androidcourse.musicplayerdemo.ui.adapters.BaseRecyclerViewAdapter
@@ -26,8 +27,8 @@ class SongViewHolder(itemView : View)
     private val m_TestView_Title : TextView
 
     private val m_TextView_Artist : TextView
-
     private val m_ImageView_Art : ImageView
+
 
     init {
         m_RootView = findViewById(R.id.item_root_view)
@@ -54,7 +55,8 @@ class SongViewHolder(itemView : View)
     override fun onBindViewHolder(viewItem: BaseRecyclerViewItem?) {
         val item : SongRecyclerViewItem = viewItem as SongRecyclerViewItem
 
-        this.m_TestView_Title.setText(viewItem.m_Title)
+        this.m_TestView_Title.text = viewItem.getTitle()
+        this.m_TextView_Artist.text = viewItem.getArtistName()
 
         // 从图片路径获取图像并加载到imageView中
         Glide.with(itemView.context)

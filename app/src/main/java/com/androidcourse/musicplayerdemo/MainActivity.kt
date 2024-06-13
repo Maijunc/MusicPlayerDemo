@@ -5,10 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.androidcourse.musicplayerdemo.ui.UIThread
 import com.androidcourse.musicplayerdemo.utils.PermissionManager
 
@@ -21,22 +21,26 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        PermissionManager.requestPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE, 100)
         PermissionManager.requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE, 100)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            PermissionManager.requestPermission(
-                this,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-                100
-            )
-            if (!Environment.isExternalStorageManager()) {
+            try {
                 val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.addCategory("android.intent.category.DEFAULT")
                 val uri = Uri.fromParts("package", packageName, null)
                 intent.setData(uri)
                 startActivity(intent)
+            } catch (e : Exception) {
+                val intent = Intent()
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
             }
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                100
+            )
         }
-
 
         // -------------------
         // 请求应用程序管理外部存储的权限。
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
-        m_Thread = UIThread(this)
+        this.m_Thread = UIThread(this)
 
     }
 }

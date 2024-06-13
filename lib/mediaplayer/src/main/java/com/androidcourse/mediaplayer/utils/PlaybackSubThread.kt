@@ -3,6 +3,7 @@ package com.androidcourse.mediaplayer.utils
 import android.annotation.SuppressLint
 import android.media.session.PlaybackState
 import android.os.SystemClock
+import android.util.Log
 import com.androidcourse.mediaplayer.PlaybackManager
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -40,6 +41,7 @@ class PlaybackSubThread(interval : Int, playbackManager: PlaybackManager)
             val actions : Long = this.m_PlaybackManager.getAvailableActions()
             val state : Int = this.m_PlaybackManager.getPlaybackState()
             val position : Int = this.m_PlaybackManager.getPlaybackPosition()
+            Log.i("Playback Thread", "Current position : " + position.toString() + "ms")
 
             if(this.m_PlaybackManager.isPlayingOrPaused()) {
                 @SuppressLint("WrongConstant")
