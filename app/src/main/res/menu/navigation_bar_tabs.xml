@@ -12,6 +12,11 @@
         android:title="Library" />
 
     <item
+        android:id="@+id/tab_AI"
+        android:icon="@drawable/ai_24px"
+        android:title="AI" />
+
+    <item
         android:id="@+id/tab_settings"
         android:icon="@drawable/settings_24px"
         android:title="Settings" />
