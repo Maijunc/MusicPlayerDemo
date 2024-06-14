@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import androidx.viewpager2.widget.ViewPager2
 import com.androidcourse.musicplayerdemo.R
 import com.androidcourse.musicplayerdemo.ui.adapters.StateFragmentAdapter
+import com.androidcourse.musicplayerdemo.ui.fragments.FragmentAI
 import com.androidcourse.musicplayerdemo.ui.fragments.FragmentHome
 import com.androidcourse.musicplayerdemo.ui.fragments.FragmentLibrary
 import com.androidcourse.musicplayerdemo.ui.fragments.FragmentSettings
@@ -49,6 +50,7 @@ class RootNavigationBarPanel (context : Context, panelLayout : MultiSlidingUpPan
 
         adapter.addFragment(FragmentHome::class.java)
         adapter.addFragment(FragmentLibrary::class.java)
+        adapter.addFragment(FragmentAI::class.java)
         adapter.addFragment(FragmentSettings()::class.java)
 
         // 调用示范
