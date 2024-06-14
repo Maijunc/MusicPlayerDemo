@@ -40,7 +40,6 @@ class UIThread(activity : MainActivity) {
         this.m_MediaPlayerThread = MediaPlayerThread(this.m_MainActivity, getCallback())
         this.m_MediaPlayerThread.onStart()
     }
-
     fun getCallback() : MediaController.Callback {
         return object : MediaController.Callback() {
             override fun onPlaybackStateChanged(state: PlaybackState?) {

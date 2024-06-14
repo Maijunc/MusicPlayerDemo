@@ -1,5 +1,6 @@
 package com.androidcourse.musicplayerdemo.ui.adapters.viewholders
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -57,6 +58,8 @@ class SongViewHolder(itemView : View)
 
         this.m_TestView_Title.text = viewItem.getTitle()
         this.m_TextView_Artist.text = viewItem.getArtistName()
+
+        Log.i("SongViewHolder", "filepath:" + viewItem.getFilePath())
 
         // 从图片路径获取图像并加载到imageView中
         Glide.with(itemView.context)

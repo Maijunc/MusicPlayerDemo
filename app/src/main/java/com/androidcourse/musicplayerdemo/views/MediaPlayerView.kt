@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.androidcourse.mediaplayer.PlaybackManager
 import com.androidcourse.musicplayerdemo.R
 import com.androidcourse.musicplayerdemo.ui.MediaPlayerManager
+import com.androidcourse.musicplayerdemo.ui.MediaPlayerThread
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.realgear.multislidinguppanel.MultiSlidingUpPanelLayout
 
@@ -72,17 +73,17 @@ class MediaPlayerView (rootView : View){
     }
 
     private fun onInit() {
-        this.m_ExtFloatingActBtn_PlayPause_Big.setOnClickListener(View.OnClickListener { v: View? ->
-            MediaPlayerManager.getInstance()?.getCallback()?.onClickPlayPause()
-        })
+        this.m_ExtFloatingActBtn_PlayPause_Big.setOnClickListener{
+            MediaPlayerThread.getInstance()?.getCallback()?.onClickPlayPause()
+        }
 
-        this.m_ExtFloatingActBtn_PlayNext.setOnClickListener(View.OnClickListener { v: View? ->
-            MediaPlayerManager.getInstance()?.getCallback()?.onClickPlayNext()
-        })
+        this.m_ExtFloatingActBtn_PlayNext.setOnClickListener{
+            MediaPlayerThread.getInstance()?.getCallback()?.onClickPlayNext()
+        }
 
-        this.m_ExtFloatingActBtn_PlayPrev.setOnClickListener(View.OnClickListener { v: View? ->
-            MediaPlayerManager.getInstance()?.getCallback()?.onClickPlayPrev()
-        })
+        this.m_ExtFloatingActBtn_PlayPrev.setOnClickListener{
+            MediaPlayerThread.getInstance()?.getCallback()?.onClickPlayPrev()
+        }
     }
 
     fun onMetadataChanged(metadata : MediaMetadata?) {
@@ -155,6 +156,7 @@ class MediaPlayerView (rootView : View){
         if (this.m_PrevState == null || this.m_PrevState!!.getState() != state.state) this.m_ExtFloatingActBtn_PlayPause_Big.setIconResource(
             if (state.state == PlaybackState.STATE_PLAYING) com.androidcourse.icons_pack.R.drawable.pause_24px else com.androidcourse.icons_pack.R.drawable.play_arrow_24px
         )
+        this.m_SeekBar.progress = state.position.toInt()
     }
 
 }

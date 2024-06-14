@@ -16,8 +16,11 @@ import com.androidcourse.mediaplayer.interfaces.IPlaybackCallback
 import com.androidcourse.mediaplayer.utils.PlaybackListener
 import com.androidcourse.mediaplayer.utils.PlaybackSubThread
 import com.realgear.mediaplayer.model.Song
+import java.io.File
 import java.util.TreeMap
-//
+
+
+// 广播接收后最后处理逻辑的一层
 class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
 
     companion object {
@@ -284,12 +287,19 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
             this.m_CurrentQueueIndex = queueIndex
 
             if(songToPlay != null) { // check not really needed here
-                try {
-                    this.m_MediaPlayer!!.setDataSource(songToPlay.data)
+                val filePath = songToPlay.data
+                val file = File(filePath)
+                if (file.exists()) {
+                    try {
+                        this.m_MediaPlayer!!.setDataSource(filePath)
+                        this.m_MediaPlayer!!.prepareAsync()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "MediaPlayer setDataSource or prepareAsync failed", e)
+                    }
+                } else {
+                    Log.e(TAG, "File not found: $filePath")
+                    // 处理文件不存在的情况，例如跳过该文件或显示错误消息
                 }
-                catch (ignore : Exception) {}
-
-                this.m_MediaPlayer!!.prepareAsync()
             }
             else {
                 this.onStartMediaPlayer()
@@ -326,7 +336,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     // 这里应该是 --this.m_CurrentQueueIndex ?
     fun onPlayPrev() {
         if(this.canPlayPrev())
-            this.onPlayIndex(--this.m_CurrentQueueIndex - 1)
+            this.onPlayIndex(this.m_CurrentQueueIndex - 1)
     }
 
     fun onSeekTo(position : Long) {

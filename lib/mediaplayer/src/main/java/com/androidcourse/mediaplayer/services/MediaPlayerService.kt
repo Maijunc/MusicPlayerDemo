@@ -153,7 +153,6 @@ class MediaPlayerService
 
     fun onUpdateQueue(queue : MutableList<Int>, index : Int) {
         this.m_PlaybackManager.onSetQueue(queue)
-//        this.m_PlaybackManager.onPlayIndex(index)
         this.m_CurrentIndex = index
     }
 

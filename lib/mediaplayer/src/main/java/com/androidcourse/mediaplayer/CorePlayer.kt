@@ -3,8 +3,8 @@ package com.androidcourse.mediaplayer
 import android.app.Activity
 import android.content.Intent
 import android.media.session.MediaController
-import com.androidcourse.mediaplayer.statics.IntentFields
 import com.androidcourse.mediaplayer.interfaces.IPlayerCallback
+import com.androidcourse.mediaplayer.statics.IntentFields
 
 
 class CorePlayer(private val m_vActivity: Activity, callback: MediaController.Callback?) {
@@ -37,8 +37,14 @@ class CorePlayer(private val m_vActivity: Activity, callback: MediaController.Ca
                     m_vActivity.sendBroadcast(intent)
                 }
 
-                override fun onClickPlayNext() {}
-                override fun onClickPlayPrev() {}
+                override fun onClickPlayNext() {
+                    val intent = Intent(IntentFields.INTENT_PLAY_NEXT)
+                    m_vActivity.sendBroadcast(intent)
+                }
+                override fun onClickPlayPrev() {
+                    val intent = Intent(IntentFields.INTENT_PLAY_PREV)
+                    m_vActivity.sendBroadcast(intent)
+                }
                 override fun onClickPause() {
                     val intent = Intent(IntentFields.INTENT_PLAY_PAUSE)
                     m_vActivity.sendBroadcast(intent)
