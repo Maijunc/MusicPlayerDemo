@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/material_dynamic_primary20"
+    android:background="@color/my_fragment_library_background"
     android:orientation="vertical">
 
     <FrameLayout

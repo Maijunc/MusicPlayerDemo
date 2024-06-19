@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.media.MediaMetadata
 import android.media.session.PlaybackState
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton

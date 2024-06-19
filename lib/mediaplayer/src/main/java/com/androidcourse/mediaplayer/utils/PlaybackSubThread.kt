@@ -41,7 +41,7 @@ class PlaybackSubThread(interval : Int, playbackManager: PlaybackManager)
             val actions : Long = this.m_PlaybackManager.getAvailableActions()
             val state : Int = this.m_PlaybackManager.getPlaybackState()
             val position : Int = this.m_PlaybackManager.getPlaybackPosition()
-            Log.i("Playback Thread", "Current position : " + position.toString() + "ms")
+            Log.i("PlaybackSubThread", "Current position : " + position.toString() + "ms")
 
             if(this.m_PlaybackManager.isPlayingOrPaused()) {
                 @SuppressLint("WrongConstant")

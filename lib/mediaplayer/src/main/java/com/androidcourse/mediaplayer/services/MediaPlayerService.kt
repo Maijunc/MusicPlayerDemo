@@ -38,6 +38,11 @@ class MediaPlayerService
         return Service.START_STICKY
     }
 
+    override fun onSetRepeatType(repeatType: Int)
+    {
+        this.setRepeatState(repeatType)
+    }
+
     override fun onCreate() {
         super.onCreate()
 

@@ -40,13 +40,14 @@ class RootMediaPlayerPanel(context : Context, panelLayout : MultiSlidingUpPanelL
 
         // Sets the panels peak height
         this.peakHeight = resources.getDimensionPixelSize(R.dimen.mediaplayerbar_height)
-    }
 
-    // 绑定数据用的
-    override fun onBindView() {
         // 播放器视图 以及 播放器工具栏视图
         m_MediaPlayerView = MediaPlayerView(findViewById(R.id.media_player_view))
         m_MediaPlayerBarView = MediaPlayerBarView(findViewById(R.id.media_player_bar_view))
+    }
+
+    // 绑定数据用的 数据更新时调用
+    override fun onBindView() {
 
         // 播放器底部行为布局
         val layout : FrameLayout = findViewById(R.id.media_player_bottom_sheet_behavior)

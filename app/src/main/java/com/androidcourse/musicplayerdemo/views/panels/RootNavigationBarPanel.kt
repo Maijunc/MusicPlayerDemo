@@ -38,12 +38,14 @@ class RootNavigationBarPanel (context : Context, panelLayout : MultiSlidingUpPan
 
         // Sets the panels peak height 设置峰值高度
         this.peakHeight = resources.getDimensionPixelSize(R.dimen.navigation_bar_height)
+
+        rootViewPager = multiSlidingUpPanel.findViewById(R.id.root_view_pager)
+        rootNavigationBar = findViewById(R.id.root_navigation_bar)
     }
 
     //列表项需要更新数据时，onBindView 方法会被调用
     override fun onBindView() {
-        rootViewPager = multiSlidingUpPanel.findViewById(R.id.root_view_pager)
-        rootNavigationBar = findViewById(R.id.root_navigation_bar)
+
 
         // 存储导航栏的Adapter
         val adapter = StateFragmentAdapter(supportFragmentManager, lifecycle)

@@ -7,6 +7,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.session.PlaybackState
+import android.nfc.Tag
 import android.os.Handler
 import android.os.PowerManager
 import android.os.SystemClock
@@ -145,7 +146,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
 
         if(this.m_PlaybackState == PlaybackState.STATE_PLAYING) {
             val thread: PlaybackSubThread = PlaybackSubThread(THREAD_UPDATE_INTERVAL, this)
-            thread.getWorker().name = "Playback Thread"
+            thread.getWorker().name = "Playback Sub Thread"
             this.m_Threads.add(thread)
             thread.onStart()
         }
@@ -209,14 +210,18 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     }
 
     fun onAudioCompleted() {
+        Log.i(TAG,"AudioCompleted, PlaybackState = " + m_RepeatType)
 
         if(this.isPlaying()) {
             this.onStop()
         }
         else {
-            when (this.m_PlaybackState) {
+            when (this.m_RepeatType) {
                 REPEAT_TYPE_NONE -> {
-
+                    this.m_PlaybackState = PlaybackState.STATE_PAUSED;
+                    this.m_MediaPlayer!!.pause();
+                    this.m_MediaPlayer!!.seekTo(0);
+                    onUpdatePlaybackState();
                 }
                 REPEAT_TYPE_ONE -> {
                     onPlayIndex(this.m_CurrentQueueIndex)
@@ -227,12 +232,10 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
                     else
                         this.onPlayIndex(0) //从头开始播放
                 }
+                else -> {
+                    Log.i(TAG, "REPEAT_TYPE_NONE")
+                }
             }
-
-            this.m_PlaybackState = PlaybackState.STATE_PAUSED
-            this.m_MediaPlayer!!.pause()
-            this.m_MediaPlayer!!.seekTo(0)
-            this.onUpdatePlaybackState()
         }
     }
 
@@ -321,6 +324,8 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
         this.onUpdatePlaybackState()
     }
     fun onPlayPause() {
+        Log.i("OnPlayPause", "Click")
+
         if(this.m_MediaPlayer == null)
             return
 
@@ -342,6 +347,7 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
     fun onSeekTo(position : Long) {
         if(this.m_MediaPlayer != null && isPlayingOrPaused()) {
             this.m_MediaPlayer!!.seekTo(position.toInt())
+            onUpdatePlaybackState() //Update the playback state
         }
     }
     fun onSetQueue(queue : MutableList<Int>) {

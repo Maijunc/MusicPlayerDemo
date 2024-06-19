@@ -14,7 +14,9 @@ import android.graphics.drawable.Icon
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.nfc.Tag
 import android.os.Build
+import android.util.Log
 import com.androidcourse.mediaplayer.services.MediaPlayerService
 import com.androidcourse.mediaplayer.statics.IntentFields
 
@@ -121,6 +123,7 @@ class MediaNotificationManager(service: MediaPlayerService) : BroadcastReceiver(
             )
         }
 
+    // Receive the broadcast
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             IntentFields.ACTION_PLAY -> m_vService.onPlay()
@@ -130,6 +133,7 @@ class MediaNotificationManager(service: MediaPlayerService) : BroadcastReceiver(
         }
     }
 
+    // Update the Notification with the MediaMetadata
     fun onUpdateNotification(
         mediaMetadata: MediaMetadata,
         playbackState: PlaybackState?,

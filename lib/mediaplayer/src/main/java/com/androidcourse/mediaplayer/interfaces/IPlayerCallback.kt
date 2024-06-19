@@ -18,4 +18,5 @@ interface IPlayerCallback {
     fun onUpdateQueue(queue : List<Int>, queueIndex : Int)
 
     fun onDestroy()
+    fun onSetRepeatType(repeatType: Int)
 }

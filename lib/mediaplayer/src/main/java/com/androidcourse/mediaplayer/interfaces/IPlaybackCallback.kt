@@ -10,4 +10,5 @@ interface IPlaybackCallback {
     fun onUpdateMetadata(song : Song?)
 
 
+    fun onSetRepeatType(repeatType: Int)
 }

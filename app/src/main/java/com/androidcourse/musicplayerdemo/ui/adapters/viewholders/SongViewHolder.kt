@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.room.util.ViewInfo
 import com.androidcourse.musicplayerdemo.R
 import com.androidcourse.musicplayerdemo.glide.audiocover.AudioFileCover
 import com.androidcourse.musicplayerdemo.ui.adapters.BaseRecyclerViewAdapter
@@ -16,7 +14,7 @@ import com.androidcourse.musicplayerdemo.ui.adapters.models.BaseRecyclerViewItem
 import com.androidcourse.musicplayerdemo.ui.adapters.models.SongRecyclerViewItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import org.w3c.dom.Text
+
 
 // itemView 对应 item_song_layout_sample.xml
 class SongViewHolder(itemView : View)
@@ -66,6 +64,7 @@ class SongViewHolder(itemView : View)
             .load(AudioFileCover(item.getFilePath()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .placeholder(com.androidcourse.icons_pack.R.drawable.album_24px)
+            .error(com.androidcourse.icons_pack.R.drawable.album_24px) // 设置错误占位图
             .into(this.m_ImageView_Art)
     }
 }

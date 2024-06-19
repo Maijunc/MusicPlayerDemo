@@ -1,8 +1,8 @@
 package com.androidcourse.musicplayerdemo.views
 
-import android.content.Context
 import android.media.MediaMetadata
 import android.media.session.PlaybackState
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -13,7 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.androidcourse.mediaplayer.PlaybackManager
 import com.androidcourse.musicplayerdemo.R
-import com.androidcourse.musicplayerdemo.ui.MediaPlayerManager
 import com.androidcourse.musicplayerdemo.ui.MediaPlayerThread
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.realgear.multislidinguppanel.MultiSlidingUpPanelLayout
@@ -39,16 +38,22 @@ class MediaPlayerView (rootView : View){
     private val m_ExtFloatingActBtn_PlayPause_Big : ExtendedFloatingActionButton
     private val m_ExtFloatingActBtn_PlayNext : ExtendedFloatingActionButton
     private val m_ExtFloatingActBtn_PlayPrev : ExtendedFloatingActionButton
+    private val m_ExtFloatingActBtn_Repeat : ExtendedFloatingActionButton
 
     private val m_TextView_SongArtist : TextView
     private val m_TextView_SongTitle : TextView
-    private val m_TextView_SongDuration : TextView
+    private val m_TextView_Song_CurrentDuration : TextView
+    private val m_TextView_Song_MaxDuration : TextView
 
     private val m_ImageView_Art : ImageView
 
     private val m_SeekBar : SeekBar
+    private var m_CanUpdateSeekBar : Boolean = true
 
     private var m_PrevState : PlaybackState? = null
+
+    @PlaybackManager.Companion.RepeatType
+    private var m_RepeatType : Int = PlaybackManager.REPEAT_TYPE_ONE
 
     init {
         this.m_RootView = rootView
@@ -60,12 +65,35 @@ class MediaPlayerView (rootView : View){
         this.m_ExtFloatingActBtn_PlayPause_Big = findViewById(R.id.btn_play_pause_big)
         this.m_ExtFloatingActBtn_PlayNext = findViewById(R.id.btn_skip_next)
         this.m_ExtFloatingActBtn_PlayPrev = findViewById(R.id.btn_skip_previous)
+        this.m_ExtFloatingActBtn_Repeat = findViewById(R.id.btn_repeat)
 
         this.m_TextView_SongArtist = findViewById(R.id.media_player_art_artist)
         this.m_TextView_SongTitle = findViewById(R.id.media_player_art_title)
-        this.m_TextView_SongDuration = findViewById(R.id.media_player_song_duration)
+        this.m_TextView_Song_MaxDuration = findViewById(R.id.media_player_song_max_duration)
+        this.m_TextView_Song_CurrentDuration = findViewById(R.id.media_player_song_current_duration)
 
         this.m_SeekBar = findViewById(R.id.media_player_seekbar)
+        this.m_SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            var finalProgress : Int = 0
+            var isUser : Boolean = false
+
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                this.finalProgress = progress
+                this.isUser = fromUser
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                m_CanUpdateSeekBar = false
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (isUser) {
+                    MediaPlayerThread.getInstance()?.getCallback()?.onSetSeekbar(finalProgress)
+                }
+                m_CanUpdateSeekBar = true
+            }
+
+        })
 
         this.m_RootView.alpha = 0.0F
 
@@ -84,23 +112,53 @@ class MediaPlayerView (rootView : View){
         this.m_ExtFloatingActBtn_PlayPrev.setOnClickListener{
             MediaPlayerThread.getInstance()?.getCallback()?.onClickPlayPrev()
         }
+
+        this.m_ExtFloatingActBtn_Repeat.setOnClickListener{
+            Log.i("MediaPlayerView", "OnClickBtn_Repeat")
+            if (m_RepeatType < 2)
+                m_RepeatType++
+            else
+                m_RepeatType = PlaybackManager.REPEAT_TYPE_NONE
+
+            when (m_RepeatType)
+            {
+                PlaybackManager.REPEAT_TYPE_NONE -> {
+                    this.m_ExtFloatingActBtn_Repeat.setIconResource(com.androidcourse.icons_pack.R.drawable.repeat_none_24px)
+                    this.m_ExtFloatingActBtn_Repeat.alpha = 0.5F
+                }
+                PlaybackManager.REPEAT_TYPE_ONE -> {
+                    this.m_ExtFloatingActBtn_Repeat.setIconResource(com.androidcourse.icons_pack.R.drawable.repeat_one_24px)
+                    this.m_ExtFloatingActBtn_Repeat.alpha = 1F
+                }
+                PlaybackManager.REPEAT_TYPE_ALL -> {
+                    this.m_ExtFloatingActBtn_Repeat.setIconResource(com.androidcourse.icons_pack.R.drawable.repeat_all_24px)
+                    this.m_ExtFloatingActBtn_Repeat.alpha = 1F
+                }
+                else -> {
+                    m_RepeatType = PlaybackManager.REPEAT_TYPE_NONE
+                    this.m_ExtFloatingActBtn_Repeat.setIconResource(com.androidcourse.icons_pack.R.drawable.repeat_none_24px)
+                    this.m_ExtFloatingActBtn_Repeat.alpha = 0.5F
+                }
+            }
+
+            MediaPlayerThread.getInstance()?.getCallback()?.onSetRepeatType(m_RepeatType)
+        }
     }
 
     fun onMetadataChanged(metadata : MediaMetadata?) {
         if(metadata == null)
             return
 
-        val duration_minutes = metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) / 60000
-        val duration_seconds = (metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) -
-                metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) / 60000 * 60000) / 1000
+//        val duration_minutes = metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) / 60000
+//        val duration_seconds = (metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) -
+//                metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) / 60000 * 60000) / 1000
+
         this.m_TextView_SongTitle.setText(metadata.getText(MediaMetadata.METADATA_KEY_TITLE))
         this.m_TextView_SongArtist.setText(metadata.getText(MediaMetadata.METADATA_KEY_ARTIST))
 //        this.mTextView_SongPosition.setText( / 1000);
         //        this.mTextView_SongPosition.setText( / 1000);
-        this.m_TextView_SongDuration.setText(
-            "$duration_minutes:"
-                    + (if (duration_seconds > 10) duration_seconds else ("0"
-                    + duration_seconds.toString())).toString()
+        this.m_TextView_Song_MaxDuration.setText(
+            GetTimeFormat(metadata.getLong(MediaMetadata.METADATA_KEY_DURATION))
         )
 
         val album_art = metadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART)
@@ -116,7 +174,19 @@ class MediaPlayerView (rootView : View){
             )
         }
 
-        this.m_SeekBar.setMax(metadata.getLong(MediaMetadata.METADATA_KEY_DURATION).toInt())
+        this.m_SeekBar.progress = 0
+        this.m_SeekBar.max = metadata.getLong(MediaMetadata.METADATA_KEY_DURATION).toInt()
+    }
+
+    // 获取对应时间的字符串
+    fun GetTimeFormat(ms : Long) : String
+    {
+        val duration_minutes = ms / 60000
+        val duration_seconds = (ms - ms / 60000 * 60000) / 1000
+
+        return ("$duration_minutes:"
+        + (if (duration_seconds > 10) duration_seconds else ("0"
+                + duration_seconds.toString())).toString())
     }
 
     // slideOffset 滑动偏移量 alpha 是透明度的设置 1F 表示完全不透明 0表示完全透明
@@ -156,7 +226,9 @@ class MediaPlayerView (rootView : View){
         if (this.m_PrevState == null || this.m_PrevState!!.getState() != state.state) this.m_ExtFloatingActBtn_PlayPause_Big.setIconResource(
             if (state.state == PlaybackState.STATE_PLAYING) com.androidcourse.icons_pack.R.drawable.pause_24px else com.androidcourse.icons_pack.R.drawable.play_arrow_24px
         )
-        this.m_SeekBar.progress = state.position.toInt()
+        if (this.m_CanUpdateSeekBar)
+            this.m_SeekBar.progress = state.position.toInt()
+        this.m_TextView_Song_CurrentDuration.text = GetTimeFormat(state.position)
     }
 
 }

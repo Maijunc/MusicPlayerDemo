@@ -89,6 +89,8 @@ class MediaPlayerBroadcastHelper(service: MediaPlayerService) {
     private val setRepeatState : BroadcastReceiver = object : ICustomBroadcastReceiver {
         override fun onReceive(context: Context, intent: Intent) {
             val state: Int = intent.getIntExtra(IntentFields.EXTRA_REPEAT_STATE, -1)
+
+            this@MediaPlayerBroadcastHelper.m_Service.setRepeatState(state)
         }
     }.build()
 
@@ -101,7 +103,7 @@ class MediaPlayerBroadcastHelper(service: MediaPlayerService) {
             this.m_Service.registerReceiver(this.onPlayPrev, IntentFilter(IntentFields.INTENT_PLAY_PREV), RECEIVER_EXPORTED)
             this.m_Service.registerReceiver(this.onPlayPause, IntentFilter(IntentFields.INTENT_PLAY_PAUSE), RECEIVER_EXPORTED)
             this.m_Service.registerReceiver(this.onUpdateQueue, IntentFilter(IntentFields.INTENT_UPDATE_QUEUE), RECEIVER_EXPORTED)
-            this.m_Service.registerReceiver(this.setRepeatState, IntentFilter(IntentFields.INTENT_SET_SEEKBAR), RECEIVER_EXPORTED)
+            this.m_Service.registerReceiver(this.onSetSeekbarPosition, IntentFilter(IntentFields.INTENT_SET_SEEKBAR), RECEIVER_EXPORTED)
             this.m_Service.registerReceiver(this.setRepeatState, IntentFilter(IntentFields.INTENT_CHANGE_REPEAT), RECEIVER_EXPORTED)
         }
         else {
@@ -111,7 +113,7 @@ class MediaPlayerBroadcastHelper(service: MediaPlayerService) {
             this.m_Service.registerReceiver(this.onPlayPrev, IntentFilter(IntentFields.INTENT_PLAY_PREV))
             this.m_Service.registerReceiver(this.onPlayPause, IntentFilter(IntentFields.INTENT_PLAY_PAUSE))
             this.m_Service.registerReceiver(this.onUpdateQueue, IntentFilter(IntentFields.INTENT_UPDATE_QUEUE))
-            this.m_Service.registerReceiver(this.setRepeatState, IntentFilter(IntentFields.INTENT_SET_SEEKBAR))
+            this.m_Service.registerReceiver(this.onSetSeekbarPosition, IntentFilter(IntentFields.INTENT_SET_SEEKBAR))
             this.m_Service.registerReceiver(this.setRepeatState, IntentFilter(IntentFields.INTENT_CHANGE_REPEAT))
         }
     }
