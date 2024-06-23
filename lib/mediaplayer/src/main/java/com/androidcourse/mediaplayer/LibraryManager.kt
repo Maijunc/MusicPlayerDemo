@@ -117,11 +117,12 @@ class LibraryManager {
         private fun getSongArt(song: Song): Bitmap? {
             try {
                 val retriever = MediaMetadataRetriever()
+                // the data here is path
                 retriever.setDataSource(song.data)
-                val data = retriever.embeddedPicture
+                val art = retriever.embeddedPicture
 
-                if (data != null && data.size > 0) {
-                    val bitmap : Bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+                if (art != null && art.size > 0) {
+                    val bitmap : Bitmap = BitmapFactory.decodeByteArray(art, 0, art.size)
                     return bitmap
                 }
             }

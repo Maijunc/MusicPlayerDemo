@@ -51,7 +51,7 @@ class FragmentLibrary() : Fragment() {
         m_LibraryRecyclerView.setPadding(0,0,0,panelheights)
 
 // requireContext() 封装了一下context 防止空值
-        val songs : List<Song> = LibraryManager.getSongs(requireContext())
+        val songs : MutableList<Song> = LibraryManager.getSongs(requireContext()).toMutableList()
         val items : MutableList<BaseRecyclerViewItem> = ArrayList()
 
         for (song in songs) {
@@ -70,6 +70,16 @@ class FragmentLibrary() : Fragment() {
                 if(this.m_LibraryAdapter.getViewType() == BaseRecyclerViewAdapter.ViewType.GRID)
                 BaseRecyclerViewAdapter.ViewType.LIST
                 else BaseRecyclerViewAdapter.ViewType.GRID)
+
+                val songsNew : List<Song> = LibraryManager.getSongs(requireContext())
+                var cnt = 0
+                val pos = songs.size - 1
+                if(songsNew.size != items.size) {
+                    items.clear()
+                    for (song in songsNew)
+                        items.add(SongRecyclerViewItem(song))
+                    m_LibraryAdapter.notifyDataSetChanged()
+                }
         }
     }
 

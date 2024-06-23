@@ -114,7 +114,6 @@ class MediaPlayerView (rootView : View){
         }
 
         this.m_ExtFloatingActBtn_Repeat.setOnClickListener{
-            Log.i("MediaPlayerView", "OnClickBtn_Repeat")
             if (m_RepeatType < 2)
                 m_RepeatType++
             else
@@ -185,7 +184,7 @@ class MediaPlayerView (rootView : View){
         val duration_seconds = (ms - ms / 60000 * 60000) / 1000
 
         return ("$duration_minutes:"
-        + (if (duration_seconds > 10) duration_seconds else ("0"
+        + (if (duration_seconds >= 10) duration_seconds else ("0"
                 + duration_seconds.toString())).toString())
     }
 
