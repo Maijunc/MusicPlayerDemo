@@ -1,24 +1,45 @@
 package com.androidcourse.musicplayerdemo.ui.fragments
 
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.androidcourse.musicplayerdemo.R
+import com.androidcourse.musicplayerdemo.utils.download.DownloadUtils
+import com.androidcourse.musicplayerdemo.utils.download.IDownloadListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FragmentHome() : Fragment() {
+
+    private lateinit var m_RootView : View
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        this.m_RootView = inflater.inflate(R.layout.fragment_home, container, false)
+
+        return this.m_RootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    fun <T : View> findViewById(@IdRes id : Int) : T {
+        return this.m_RootView.findViewById(id)
     }
 }
 

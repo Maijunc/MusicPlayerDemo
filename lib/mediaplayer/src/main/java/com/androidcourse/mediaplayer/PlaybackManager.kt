@@ -7,6 +7,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.session.PlaybackState
+import android.nfc.Tag
 import android.os.Handler
 import android.os.PowerManager
 import android.os.SystemClock
@@ -16,6 +17,7 @@ import com.androidcourse.mediaplayer.interfaces.IPlaybackCallback
 import com.androidcourse.mediaplayer.utils.PlaybackListener
 import com.androidcourse.mediaplayer.utils.PlaybackSubThread
 import com.realgear.mediaplayer.model.Song
+import java.io.File
 import java.util.TreeMap
 
 
@@ -288,24 +290,19 @@ class PlaybackManager(context: Context, playbackCallback: IPlaybackCallback) {
             this.m_CurrentQueueIndex = queueIndex
 
             if(songToPlay != null) { // check not really needed here
-//                val filePath = songToPlay.data
-//                val file = File(filePath)
-//                if (file.exists()) {
-//                    try {
-//                        this.m_MediaPlayer!!.setDataSource(filePath)
-//                        this.m_MediaPlayer!!.prepareAsync()
-//                    } catch (e: Exception) {
-//                        Log.e(TAG, "MediaPlayer setDataSource or prepareAsync failed", e)
-//                    }
-//                } else {
-//                    Log.e(TAG, "File not found: $filePath")
-//                    // if file not found
-//                }
-                try {
-                    this.m_MediaPlayer!!.setDataSource(songToPlay.data)
-                } catch (ignore: Exception) { }
-
-                this.m_MediaPlayer!!.prepareAsync()
+                val filePath = songToPlay.data
+                val file = File(filePath)
+                if (file.exists()) {
+                    try {
+                        this.m_MediaPlayer!!.setDataSource(filePath)
+                        this.m_MediaPlayer!!.prepareAsync()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "MediaPlayer setDataSource or prepareAsync failed", e)
+                    }
+                } else {
+                    Log.e(TAG, "File not found: $filePath")
+                    // if file not found
+                }
             }
             else {
                 this.onStartMediaPlayer()
