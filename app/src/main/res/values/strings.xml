@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MusicPlayerDemo</string>
+    <string name="已创建的歌曲">已创建的歌曲</string>
 </resources>
