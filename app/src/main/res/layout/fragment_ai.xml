@@ -5,31 +5,178 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
+        android:id="@+id/custom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:text="该部分还未实现!"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="54dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Switch
+                android:id="@+id/customSwitch"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml"
+                android:layout_marginTop="-2dp"/>
+
+            <TextView
+                android:id="@+id/customSwitchName"
+                android:layout_width="292dp"
+                android:layout_height="match_parent"
+                android:text="Custom"
+                app:layout_constraintStart_toEndOf="@+id/customSwitch"
+                android:layout_marginTop="3dp"/>
+
+            <ImageButton
+                android:id="@+id/btn_history"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@+id/customSwitchName"
+                app:srcCompat="@android:drawable/ic_menu_recent_history"
+                android:importantForAccessibility="no" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/custom_input"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/custom"
+        android:layout_marginTop="40dp">
 
         <TextView
-            android:layout_width="188dp"
-            android:layout_height="172dp"
-            android:layout_marginTop="240dp"
-            android:gravity="center"
-            android:text="公告"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/textInput_title_custom"
+            android:layout_width="410dp"
+            android:layout_height="55dp"
+            android:text="Song Description"
+            android:visibility="visible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_custom"
+            android:layout_width="410dp"
+            android:layout_height="102dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="a chill opera song about a bad breakup" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/instrmental"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/custom_input"
+        android:layout_marginTop="40dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Switch
+                android:id="@+id/instrmSwicth"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml"/>
+
+            <TextView
+                android:id="@+id/instrmSwicthName"
+                android:layout_width="332dp"
+                android:layout_height="match_parent"
+                android:text="Instrumental"
+                app:layout_constraintStart_toEndOf="@+id/instrmSwicth" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/instrmental_layout"
+        android:layout_width="match_parent"
+        android:layout_height="312dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/instrmental"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:id="@+id/instrmental_input"
+            android:layout_width="match_parent"
+            android:layout_height="189dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textInput_title_instrmental"
+                android:layout_width="413dp"
+                android:layout_height="48dp"
+                android:text="Style of Music"
+                android:visibility="visible" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInput_instrmental"
+                android:layout_width="414dp"
+                android:layout_height="113dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Enter style of music" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/title_input"
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/instrmental_input">
+
+            <TextView
+                android:id="@+id/musicTitle"
+                android:layout_width="412dp"
+                android:layout_height="50dp"
+                android:text="Title"
+                android:visibility="visible" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInput_musicTitle"
+                android:layout_width="413dp"
+                android:layout_height="60dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Enter a title" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/creatButton"
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/instrmental"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:id="@+id/btn_createMusic"
+            android:layout_width="195dp"
+            android:layout_height="44dp"
+            android:text="Create" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

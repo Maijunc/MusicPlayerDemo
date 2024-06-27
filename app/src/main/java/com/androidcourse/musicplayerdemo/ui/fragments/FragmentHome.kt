@@ -1,23 +1,12 @@
 package com.androidcourse.musicplayerdemo.ui.fragments
 
-import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.androidcourse.musicplayerdemo.R
-import com.androidcourse.musicplayerdemo.utils.download.DownloadUtils
-import com.androidcourse.musicplayerdemo.utils.download.IDownloadListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class FragmentHome() : Fragment() {
 
